@@ -141,6 +141,23 @@ export class TelegramScrapper extends EventEmitter {
             return;
           }
         }
+        
+        //Poocin No link
+         if (content && content.includes('Telegram signal')) {
+
+          Logger.log('找到电报地址!', content, new Date());
+
+          const almostAddres = content.split('(sell)');
+
+          // for e.g. 0xb6a6dcccba92905c34801e1458b0606e07bb3dd4
+          const address = almostAddres[1].substring(0, 42);
+
+          if (this.lastSignal !== address) {
+            this.lastSignal = address;
+            this.emit('newSignal', address);
+            return;
+          }
+        }
 
 
       }
